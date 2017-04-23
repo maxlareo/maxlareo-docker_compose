@@ -10,16 +10,16 @@ define docker_compose::compose (
   $owner       = 'root',
   $group       = 'root',
   $ensure      = 'present',
-  services = {},
-  networks = {},
-  volumes  = {},
-  secrets  = {},
+  $services     = [],
+  $networks     = [],
+  $volumes      = [],
+  $secrets      = [],
 ) {
 
-  validate_hash($services)
-  validate_hash($networks)
-  validate_hash($volumes)
-  validate_hash($secrets)
+  validate_array($services)
+  validate_array($networks)
+  validate_array($volumes)
+  validate_array($secrets)
 
   # path is a mandatory value, exit if undef
   if $path == undef {
