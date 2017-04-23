@@ -6,3 +6,21 @@ services:
 <%= YAML.dump(service).sub(/.*?\n/, '') %>
         <% end -%>
 <% end -%>
+<%- unless @networks.empty? %>
+networks:
+        <% @networks.each do |network| %>
+<%= YAML.dump(network).sub(/.*?\n/, '') %>
+        <% end -%>
+<% end -%>
+<%- unless @volumes.empty? %>
+volumes:
+        <% @volumes.each do |volume| %>
+<%= YAML.dump(volume).sub(/.*?\n/, '') %>
+        <% end -%>
+<% end -%>
+<%- unless @secrets.empty? %>
+secrets:
+        <% @secrets.each do |secret| %>
+<%= YAML.dump(secret).sub(/.*?\n/, '') %>
+        <% end -%>
+<% end -%>

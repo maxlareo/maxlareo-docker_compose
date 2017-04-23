@@ -10,10 +10,10 @@ define docker_compose::compose (
   $owner       = 'root',
   $group       = 'root',
   $ensure      = 'present',
-  $services     = [],
-  $networks     = [],
-  $volumes      = [],
-  $secrets      = [],
+  $services    = [],
+  $networks    = [],
+  $volumes     = [],
+  $secrets     = [],
 ) {
 
   validate_array($services)
