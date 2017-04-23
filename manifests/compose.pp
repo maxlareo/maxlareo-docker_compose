@@ -6,18 +6,15 @@
 #
 # #https://docs.docker.com/compose/compose-file/
 define docker_compose::compose (
-
-  version  = $::docker_compose::params::compose_version,
-  path     = $::docker_compose::params::compose_path,
-  owner    = $::docker_compose::params::compose_owner,
-  group    = $::docker_compose::params::compose_group,
-  ensure   = $::docker_compose::params::compose_ensure,
+  $version     = '2',
+  $owner       = 'root',
+  $group       = 'root',
+  $ensure      = 'present',
   services = {},
   networks = {},
   volumes  = {},
   secrets  = {},
-
-) inherits docker_compose::params {
+) {
 
   validate_hash($services)
   validate_hash($networks)

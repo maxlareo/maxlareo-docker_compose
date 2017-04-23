@@ -10,12 +10,13 @@
 # == Documentation
 #
 class docker_compose (
-
+  $compose = {},
 ) inherits docker_compose::params {
 
-  require stdlib
+  require 'stdlib'
 
-  class { 'docker_compose::install' } ->
-  class { 'docker_compose::service' }
+  contain 'docker_compose::install'
+
+  create_resources('docker_compose::compose', $compose)
 
 }
