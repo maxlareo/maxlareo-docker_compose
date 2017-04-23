@@ -21,16 +21,10 @@ define docker_compose::compose (
   validate_array($volumes)
   validate_array($secrets)
 
-  # path is a mandatory value, exit if undef
-  if $path == undef {
-   fail() 
-  }
-
-  file { 'docker-compose.yml':
+  file { "$name/docker-compose.yml":
     ensure  => $ensure,
     owner   => $owner,
     group   => $group,
-    path    => $path,
     content => template("docker_compose/docker-compose.yml.erb")
   }
 
