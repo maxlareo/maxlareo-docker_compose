@@ -1,9 +1,9 @@
-version: <%= @version %>
+version: '<%= @version %>'
 
 <% unless @services.empty? -%>
 services:
 
-<%= YAML.dump(services).sub(/.*?\n/, '') %>
+<%= YAML.dump(@services).sub(/.*?\n/, '') %>
 <% end -%>
 <%- unless @networks.empty? %>
 networks:
