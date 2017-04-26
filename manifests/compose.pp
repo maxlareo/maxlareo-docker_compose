@@ -4,7 +4,46 @@
 #
 # == Parameters:
 #
-# #https://docs.docker.com/compose/compose-file/
+# [*version*]
+#   String. Mandatory. Default: 2
+#   The docker-compose syntaxe version use into the file
+#
+# [*owner*]
+#   String. Mandatory. Default: root
+#   The owner of the docker-compose file
+#
+# [*group*]
+#   String. Mandatory. Default: root
+#   The group of owner the docker-compose file
+#
+# [*ensure*]
+#   String. Mandatory. Default: present
+#   The puppet ensure state of the docker-compose file
+#
+# [*services*]
+#   Hash. Optional. Default: undef
+#   The docker services describe into the docker-compose file
+#   Refer to Documentaion for further description
+#
+# [*networks*]
+#   Array. Optional. Default: undef
+#   The docker networks describe into the docker-compose file
+#   Refer to Documentaion for further description
+#
+# [*volumes*]
+#   Array. Optional. Default: undef
+#   The docker volumes describe into the docker-compose file
+#   Refer to Documentaion for further description
+#
+# [*secrets*]
+#   Array. Optional. Default: undef
+#   The docker secrets describe into the docker-compose file
+#   Refer to Documentaion for further description
+#
+# == Documentation:
+#
+# https://docs.docker.com/compose/compose-file/
+#
 define docker_compose::compose (
   $version     = '2',
   $owner       = 'root',
