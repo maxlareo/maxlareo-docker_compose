@@ -2,7 +2,7 @@
 #
 # This module install and set Docker Compose
 #
-# == Parameters:
+# == Parameters
 #
 # [*version*]
 #   String. Mandatory. Default: 1.8.1
@@ -18,7 +18,7 @@
 #   If an hash is provided here, docker_compose::compose defines are declared with:
 #   create_resources('docker_compose::compose', $compose)
 #
-# == Requires:
+# == Requires
 #
 #  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
 #
