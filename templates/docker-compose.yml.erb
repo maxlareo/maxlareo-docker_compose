@@ -2,24 +2,17 @@ version: '<%= @version %>'
 
 <% unless @services.empty? -%>
 services:
-
 <%= YAML.dump(@services).sub(/.*?\n/, '') %>
-<% end -%>
-<%- unless @networks.empty? %>
-networks:
-        <% @networks.each do |network| %>
-<%= YAML.dump(network).sub(/.*?\n/, '') %>
-        <% end -%>
 <% end -%>
 <%- unless @volumes.empty? %>
 volumes:
-        <% @volumes.each do |volume| %>
-<%= YAML.dump(volume).sub(/.*?\n/, '') %>
-        <% end -%>
+<%= YAML.dump(@volumes).sub(/.*?\n/, '') %>
+<% end -%>
+<%- unless @networks.empty? %>
+networks:
+<%= YAML.dump(@networks).sub(/.*?\n/, '') %>
 <% end -%>
 <%- unless @secrets.empty? %>
 secrets:
-        <% @secrets.each do |secret| %>
-<%= YAML.dump(secret).sub(/.*?\n/, '') %>
-        <% end -%>
+<%= YAML.dump(@secrets).sub(/.*?\n/, '') %>
 <% end -%>

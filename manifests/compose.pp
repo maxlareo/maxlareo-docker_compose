@@ -50,15 +50,15 @@ define docker_compose::compose (
   $group       = 'root',
   $ensure      = 'present',
   $services    = {},
-  $networks    = [],
-  $volumes     = [],
-  $secrets     = [],
+  $networks    = {},
+  $volumes     = {},
+  $secrets     = {},
 ) {
 
   validate_hash($services)
-  validate_array($networks)
-  validate_array($volumes)
-  validate_array($secrets)
+  validate_hash($networks)
+  validate_hash($volumes)
+  validate_hash($secrets)
 
   file { "$name/docker-compose.yml":
     ensure  => $ensure,
