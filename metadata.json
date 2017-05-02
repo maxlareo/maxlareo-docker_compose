@@ -1,6 +1,6 @@
 {
   "name": "maxlareo-docker_compose",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Maxime Lareo",
   "summary": "This module install, set and manage Docker Compose",
   "license": "Apache-2.0",
