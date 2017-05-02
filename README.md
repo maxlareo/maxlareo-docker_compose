@@ -15,65 +15,283 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+A Puppet module to install and set [Docker Compose](https://docs.docker.com/compose/overview/)
+files and manage Docker containers through Docker Compose commands.
+
+### Support
+
+This module is currently tested on:
+
+* Debian Jessie
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
+The docker_compose manage Docker Compose Files and Docker containers through them.
 
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+This module generate docker-compose.yml files conform to the official
+[Docker Documentation](https://docs.docker.com/compose/compose-file/).
 
 ## Setup
 
 ### What docker_compose affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+* Curl present to download Docker Compose binary.
+* Docker Compose binary installed on the node.
+* Docker Compose files in `${name}/docker-compose.yml`.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+This module requires Docker to be installed and running.
+It also require [puppetlabs-stdlib](https://github.com/puppetlabs/puppetlabs-stdlib).
 
 ### Beginning with docker_compose
 
-The very basic steps needed for a user to get the module up and running.
+#### Install Docker Compose
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+```puppet
+class { 'docker_compose': }
+```
+
+If using Hiera
+```yaml
+---
+classes:
+  - docker_compose
+```
+
+#### Docker Compose example
+
+```puppet
+docker_compose::compose { '/opt':
+  version  => '2',
+  services => {
+    'hello-world' => {
+      image => 'hello-world'
+    },
+  },
+}
+```
+
+If using Hiera
+```yaml
+docker_compose::compose:
+  '/opt':
+    version: '2'
+    services:
+      hello-world:
+        image: hello-world
+```
+
+On the node, in the '/opt' folder, try `docker-compose run hello-world` to test it.
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+To declare a docker-compose file, use the docker_compose::compose resource.
+This resource use nested Hashes to describe each docker-compose.yml files.
+
+The first Hash layer use the key as the path of the docker-compose file.
+The option `version` is mandatory and describe the docker compose syntax version.
+The rest is optional and try to follow the
+[Docker Documentation](https://docs.docker.com/compose/compose-file/)
+syntax, using four options: services, volumes, networks and secrets.
+
+A service definition contains configuration which will be applied to each container
+started for that service, much like passing command-line parameters to docker run.
+Likewise, network and volume definitions are analogous to docker network create and
+docker volume create.
+
+Secrets configuration are availble from Docker Compose version 3 and grant access to
+secrets on a per-service basis using the per-service secrets.
+
+### Example of bare minimum to create a Docker Compose file
+
+For a file to be created, only the hash key and the version has to be setted.
+
+Create a docker-compose.yml file in '/opt':
+```puppet
+docker_compose::compose { '/opt':
+  version  => '2',
+}
+```
+If using Hiera
+```yaml
+docker_compose::compose:
+  '/opt':
+    version: '2'
+```
+
+### Declare services / volumes / networks / secrets
+
+Services, Volumes, Networks and Secrets are declared into a Hash,
+following the Docker Compose file syntax.
+
+Declarations example of some services:
+```puppet
+docker_compose::compose { '/opt':
+  version  => '2',
+  services => {
+    'nginx' => {
+      image => 'nginx:latest',
+      container_name: 'nginx'
+    },
+    'mariadb' => {
+      image => 'mariadb'
+    },
+  },
+}
+```
+
+If using Hiera
+```yaml
+docker_compose::compose:
+  '/opt':
+    version: '2'
+      services:
+        nginx:
+          image: nginx
+          container_name: nginx
+        mariadb:
+          image: mariadb
+```
+
+### Full Example
+
+Here is a full example of docker-compose file declarations with this module:
+```puppet
+docker_compose::compose { '/opt':
+  version  => '2',
+  services => {
+    nginx => {
+      image => 'nginx:latest',
+      container_name => 'nginx',
+      networks => [ 'net-1' ],
+      ports => [ '80:80','443:443' ],
+      volumes => [ 'web:/var/www/html' ]
+    },
+    mariadb => {
+      image => 'mariadb'
+    },
+  },
+  volumes => {
+    web => {},
+  },
+  networks => {
+    net-1 => {
+      ipam => {
+        config => [
+          { subnet => '172.50.1.0/24' }
+        ],
+      }
+    },
+  },
+}
+```
+
+If using Hiera
+```yaml
+docker_compose::compose:
+  '/opt':
+    version: '2'
+    services:
+      nginx:
+        image: 'nginx'
+        container_name: 'nginx'
+        networks:
+          - 'net-1'
+        ports:
+          - '80:80'
+          - '443:443'
+        volumes:
+          - 'web:/var/www/html'
+      mariadb:
+        image: 'mariadb'
+    volumes:
+      web:
+    networks:
+      net-1:
+        ipam:
+          config:
+            - subnet: '172.50.2.0/24'
+```
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+### Public Class
+
+* docker_compose
+
+### Private Class
+
+* docker_compose::install
+* docker_compose::params
+
+### Define
+
+* docker_compose::compose
+
+#### Class  ̀docker_compose ̀
+
+Parameters
+
+* version
+The version of Docker Compose to be installed.
+String. Default: 1.8.1
+
+* docker_compose_path
+The docker-compose binary full path.
+String. Default: /usr/local/bin
+
+#### Define  ̀docker_compose::compose ̀
+
+Parameters
+
+* version
+The docker-compose syntax version use into the file.
+String. Default: 2
+
+* owner
+The owner of the docker-compose file.
+String. Default: root
+
+* group
+The group of owner the docker-compose file.
+String. Default: root
+
+* ensure
+The puppet ensure state of the docker-compose file.
+String. Default: present
+
+* services
+The docker services describe into the docker-compose file.
+Hash. Default: undef
+
+* volumes
+The docker volumes describe into the docker-compose file.
+Hash. Default: undef
+
+* networks
+The docker networks describe into the docker-compose file
+Hash. Default: undef
+
+* secrets
+The docker secrets describe into the docker-compose file
+Hash. Default: undef
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+This module is tested on Debian 8 and should work on every
+Debian based distribution.
+
+For now only installation and files creation and management of
+Docker Compose are supported.
+
+Further functionalities to come:
+
+* management of docker containers through docker-compose commands.
+For example, maintain "docker-compose up -d" or set "docker-compose down".
+* possibility to auto pull docker containers from docker-compose via cron.
+To maintain latest docker images running.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+Contributions will be gratefully accepted. Please go to the project page, fork the project, make your changes locally and then raise a pull request. Details on how to do this are available at https://guides.github.com/activities/forking.
