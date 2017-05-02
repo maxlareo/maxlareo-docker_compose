@@ -25,18 +25,18 @@
 #   The docker services describe into the docker-compose file
 #   Refer to Documentaion for further description
 #
-# [*networks*]
-#   Array. Optional. Default: undef
-#   The docker networks describe into the docker-compose file
-#   Refer to Documentaion for further description
-#
 # [*volumes*]
-#   Array. Optional. Default: undef
+#   Hash. Optional. Default: undef
 #   The docker volumes describe into the docker-compose file
 #   Refer to Documentaion for further description
 #
+# [*networks*]
+#   Hash. Optional. Default: undef
+#   The docker networks describe into the docker-compose file
+#   Refer to Documentaion for further description
+#
 # [*secrets*]
-#   Array. Optional. Default: undef
+#   Hash. Optional. Default: undef
 #   The docker secrets describe into the docker-compose file
 #   Refer to Documentaion for further description
 #
@@ -50,14 +50,14 @@ define docker_compose::compose (
   $group       = 'root',
   $ensure      = 'present',
   $services    = {},
-  $networks    = {},
   $volumes     = {},
+  $networks    = {},
   $secrets     = {},
 ) {
 
   validate_hash($services)
-  validate_hash($networks)
   validate_hash($volumes)
+  validate_hash($networks)
   validate_hash($secrets)
 
   file { "$name/docker-compose.yml":

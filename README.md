@@ -270,11 +270,11 @@ The docker volumes describe into the docker-compose file.
 Hash. Default: undef
 
 * networks
-The docker networks describe into the docker-compose file
+The docker networks describe into the docker-compose file.
 Hash. Default: undef
 
 * secrets
-The docker secrets describe into the docker-compose file
+The docker secrets describe into the docker-compose file.
 Hash. Default: undef
 
 ## Limitations
