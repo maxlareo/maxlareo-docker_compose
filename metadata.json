@@ -4,9 +4,9 @@
   "author": "Maxime Lareo",
   "summary": "This module install, set and manage Docker Compose",
   "license": "Apache 2.0",
-  "source": "",
+  "source": "https://github.com/maxlareo/maxlareo-docker_compose",
   "project_page": null,
-  "issues_url": null,
+  "issues_url": "https://github.com/maxlareo/maxlareo-docker_compose/issues",
   "tags": ["docker_compose", "docker-compose", "docker", "compose", "containers"],
   "dependencies": [
     {
