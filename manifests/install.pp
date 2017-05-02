@@ -25,13 +25,13 @@ class docker_compose::install (
     creates => '/tmp/bin/docker-compose',
     unless  => "[ $(${docker_version_cmd} | cut -d\",\" -f1 | cut -d\" \" -f3) = \"${version}\" ]",
     require => Package['curl'],
-  } ->
-  exec { 'move-docker-compose':
+  }
+  -> exec { 'move-docker-compose':
     command => "mv /tmp/docker-compose ${docker_compose_path}",
     user    => root,
     unless  => "[ $(${docker_version_cmd} | cut -d\",\" -f1 | cut -d\" \" -f3) = \"${version}\" ]",
-  } ->
-  file { "${docker_compose_path}/docker-compose":
+  }
+  -> file { "${docker_compose_path}/docker-compose":
     path  => "${docker_compose_path}/docker-compose",
     owner => 'root',
     group => 'root',

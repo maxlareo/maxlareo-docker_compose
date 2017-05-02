@@ -60,11 +60,11 @@ define docker_compose::compose (
   validate_hash($networks)
   validate_hash($secrets)
 
-  file { "$name/docker-compose.yml":
+  file { "${name}/docker-compose.yml":
     ensure  => $ensure,
     owner   => $owner,
     group   => $group,
-    content => template("docker_compose/docker-compose.yml.erb")
+    content => template('docker_compose/docker-compose.yml.erb')
   }
 
 }
