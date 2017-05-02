@@ -220,16 +220,16 @@ docker_compose::compose:
 
 * docker_compose
 
-### Private Class
+### Private Class
 
 * docker_compose::install
 * docker_compose::params
 
-### Define
+### Define
 
 * docker_compose::compose
 
-#### Class  ̀docker_compose ̀
+#### Class `docker_compose`
 
 Parameters
 
@@ -241,7 +241,7 @@ String. Default: 1.8.1
 The docker-compose binary full path.
 String. Default: /usr/local/bin
 
-#### Define  ̀docker_compose::compose ̀
+#### Define `docker_compose::compose`
 
 Parameters
 
@@ -294,4 +294,6 @@ To maintain latest docker images running.
 
 ## Development
 
-Contributions will be gratefully accepted. Please go to the project page, fork the project, make your changes locally and then raise a pull request. Details on how to do this are available at https://guides.github.com/activities/forking.
+Contributions will be gratefully accepted. Please go to the project page, fork
+the project, make your changes locally and then raise a pull request.
+Details on how to do this are available at https://guides.github.com/activities/forking.
